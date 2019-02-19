@@ -11,12 +11,12 @@ module Mutations
       item = Item.find_by(id: id)
       params = set_params(name, number)
       errors = []
-      item.update(params)
-      # if item.update(params)
-      #   GraphqlSubSchema.subscriptions.trigger('update_item', {}, item)
-      # else
-      #   errors = item.errors.full_messages
-      # end
+      # item.update(params)
+      if item.update(params)
+        GraphqlSubSchema.subscriptions.trigger('update_item', {}, item)
+      else
+        errors = item.errors.full_messages
+      end
       { item: item, errors: errors }
     end
 
